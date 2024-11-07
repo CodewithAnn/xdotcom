@@ -23,6 +23,7 @@ model User{
   bio String @default("Hey i am new X-person")
   isVerified Boolean @default(false)
   tweet Tweet[]
+  token Token[]
 
 }
 
@@ -36,4 +37,17 @@ model Tweet{
   comment Int @default(0)
   user User @relation(fields: [userId],references: [id])
   userId Int
+}
+
+// create a new table to store the auth tokens
+model Token{
+  id Int @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  type String // currently giving the String type later we'll provide an enum
+  emailToken String @unique
+  validate Boolean @default(true)
+    expiration DateTime
+    userId Int
+    user User @relation(fields: [userId],references: [id])
 }
