@@ -1,4 +1,4 @@
-import { Prisma, PrismaClient } from "@prisma/client";
+import { Prisma, PrismaClient, User } from "@prisma/client";
 import { Router, Request, Response } from "express";
 import { TweetCreate } from "../schema/tweet_schema.js";
 
@@ -14,25 +14,25 @@ const prisma = new PrismaClient();
 //     },
 //   },
 // });
-
+type AuthRequest = Request & { user?: User };
 // create tweet
-tweetRouter.post("/", async (request: Request, response: Response) => {
+tweetRouter.post("/", async (request: AuthRequest, response: Response) => {
   const body = TweetCreate.parse(request.body);
   const { content } = body;
- 
+  const user = request.user!;
   try {
     // const { content, userId } = body;
-
     const tweet = await prisma.tweet.create({
       data: {
         content: content,
+        userId: user?.id,
         ///[user]  maps tweet to user id forming the relationship
-        user: {
-          connect: { id: userId },
-        },
+        // user: {
+        //   connect: { id: userId },
+        // },
       },
     });
-    response.status(201).json({ content });
+    response.status(201).json({ tweet });
     return;
   } catch (error) {
     response.status(500).json({ error: error });
