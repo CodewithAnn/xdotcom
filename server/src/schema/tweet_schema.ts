@@ -2,5 +2,5 @@ import { z } from "zod";
 
 export const TweetCreate = z.object({
   content: z.string().max(300),
-  userId: z.number(),
+  // userId: z.number(),
 });

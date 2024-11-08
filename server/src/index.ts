@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import router from "./routes/user_routes.js";
 import tweetRouter from "./routes/tweet_routes.js";
 import authRoute from "./routes/auth_routes.js";
+import "dotenv/config";
 
 const app = express();
 const port = 3000;

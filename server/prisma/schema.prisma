@@ -45,7 +45,7 @@ model Token{
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   type String // currently giving the String type later we'll provide an enum
-  emailToken Int @unique
+  emailToken Int? @unique
   validate Boolean @default(true)
     expiration DateTime
     userId Int

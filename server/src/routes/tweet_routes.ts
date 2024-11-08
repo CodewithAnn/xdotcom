@@ -1,6 +1,7 @@
 import { Prisma, PrismaClient } from "@prisma/client";
 import { Router, Request, Response } from "express";
 import { TweetCreate } from "../schema/tweet_schema.js";
+
 const tweetRouter = Router();
 const prisma = new PrismaClient();
 // .$extends({
@@ -17,8 +18,10 @@ const prisma = new PrismaClient();
 // create tweet
 tweetRouter.post("/", async (request: Request, response: Response) => {
   const body = TweetCreate.parse(request.body);
+  const { content } = body;
+ 
   try {
-    const { content, userId } = body;
+    // const { content, userId } = body;
 
     const tweet = await prisma.tweet.create({
       data: {
@@ -98,13 +101,13 @@ tweetRouter.delete("/:id", async (request: Request, response: Response) => {
     return;
   } catch (error) {
     // response.json({ error: error });
-    if(error instanceof Prisma.PrismaClientKnownRequestError){
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
       response.status(400).json({ message: error.meta });
       // throw error;
       return;
     }
 
-    response.status(500).json({ Message:"Something happen bad" });
+    response.status(500).json({ Message: "Something happen bad" });
     return;
   }
 });
